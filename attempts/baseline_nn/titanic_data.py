@@ -20,6 +20,12 @@ class TitanicData(Dataset):
 
         # Return a tensor
         return item["Survived"].item(), torch.tensor(np.array([item["Pclass"].item(), item["Sex"].item(), item["SibSp"].item(), item["Parch"].item(), item["Fare"].item()]))
+        
+    def num_features(self):
+        # Get the first item
+        label, features = self.__getitem__(0)
+
+        return len(features)
 
 
 if __name__ == "__main__":
@@ -33,3 +39,6 @@ if __name__ == "__main__":
     label, features = dataset.__getitem__(5)
     print(label)
     print(features)
+
+    # Test get number of features
+    print(dataset.num_features())

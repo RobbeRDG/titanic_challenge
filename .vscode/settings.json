@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./attempts/baseline_nn"
+    ]
+}
