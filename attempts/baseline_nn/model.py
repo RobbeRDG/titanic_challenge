@@ -1,4 +1,3 @@
-from turtle import forward
 import torch
 import torch.nn as nn
 
@@ -8,9 +7,9 @@ class BasicNN(nn.Module):
 
         # Basic nn architecture
         self.sequence = nn.Sequential(
-            nn.Linear(in_features, 30),
+            nn.Linear(in_features, 10),
             nn.ReLU(),
-            nn.Linear(30, 1),
+            nn.Linear(10, 1),
             nn.Sigmoid()
         )
 

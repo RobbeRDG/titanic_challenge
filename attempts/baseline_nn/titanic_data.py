@@ -1,3 +1,4 @@
+from curses import raw
 import torch
 from torch.utils.data import Dataset
 import pandas as pd
@@ -8,7 +9,10 @@ class TitanicData(Dataset):
         super().__init__()
 
         # Load the data
-        self.data = pd.read_csv(path)
+        raw_data = pd.read_csv(path, dtype=np.float32)
+
+        # Store the data
+        self.data = raw_data
 
     def __len__(self):
         return len(self.data)
@@ -18,8 +22,24 @@ class TitanicData(Dataset):
         # Get the data item
         item = self.data.iloc[idx]
 
+        label = torch.tensor(
+            np.array([
+                item["Survived"].item()
+            ])
+        )
+
+        features = torch.tensor(
+            np.array([
+                item["Pclass"].item(),
+                item["Sex"].item(), 
+                item["SibSp"].item(), 
+                item["Parch"].item(), 
+                item["Fare"].item()
+            ])
+        )
+
         # Return a tensor
-        return item["Survived"].item(), torch.tensor(np.array([item["Pclass"].item(), item["Sex"].item(), item["SibSp"].item(), item["Parch"].item(), item["Fare"].item()]))
+        return label, features
         
     def num_features(self):
         # Get the first item
