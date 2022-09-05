@@ -78,7 +78,7 @@ def inference():
             output_data = pd.concat([
                 output_data,
                 pd.DataFrame({
-                    'PassengerId': idx,
+                    'PassengerId': idx + 892,
                     'Survived': 1
                 }, index={idx})
             ])
@@ -86,7 +86,7 @@ def inference():
             output_data = pd.concat([
                 output_data,
                 pd.DataFrame({
-                    'PassengerId': idx,
+                    'PassengerId': idx + 892,
                     'Survived': 0
                 }, index={idx})
             ])
