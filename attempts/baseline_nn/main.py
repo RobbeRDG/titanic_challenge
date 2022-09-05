@@ -95,5 +95,5 @@ def inference():
     output_data.to_csv('output/baseline_nn/output.csv', index=False)
 
 if __name__ == "__main__":
-    #training()
+    training()
     inference()

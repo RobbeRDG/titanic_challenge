@@ -7,9 +7,9 @@ class BasicNN(nn.Module):
 
         # Basic nn architecture
         self.sequence = nn.Sequential(
-            nn.Linear(in_features, 10),
+            nn.Linear(in_features, 20),
             nn.ReLU(),
-            nn.Linear(10, 1),
+            nn.Linear(20, 1),
             nn.Sigmoid()
         )
 
