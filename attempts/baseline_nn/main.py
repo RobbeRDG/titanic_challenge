@@ -12,10 +12,8 @@ from util import load_checkpoint, save_checkpoint, load_model_parameters
 
 def training():
     # Get the dataset and dataloader
-    train_data = TitanicData(config.TRAIN_DIR)
+    train_data = TitanicData(config.TRAIN_DIR, test_set=False)
     train_loader = DataLoader(train_data, config.BATCH_SIZE, shuffle=True)
-    test_data = TitanicData(config.VAL_DIR)
-    test_loader = DataLoader(test_data, batch_size=1, shuffle=True)
 
     # Initialize the model
     model = BasicNN(train_data.num_features()).to(config.DEVICE)
@@ -49,7 +47,7 @@ def training():
 
 def inference():
     # Get the dataset and dataloader
-    test_data = TitanicData(config.VAL_DIR)
+    test_data = TitanicData(config.VAL_DIR, test_set=True)
     test_loader = DataLoader(test_data, batch_size=1, shuffle=False)
 
     # Initialize the model

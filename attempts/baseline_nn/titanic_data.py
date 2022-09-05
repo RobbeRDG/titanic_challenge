@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 
 class TitanicData(Dataset):
-    def __init__(self, path):
+    def __init__(self, path, test_set):
         super().__init__()
 
         # Load the data
@@ -13,6 +13,9 @@ class TitanicData(Dataset):
 
         # Store the data
         self.data = raw_data
+
+        # Set the test set flag
+        self.test_set = test_set
 
     def __len__(self):
         return len(self.data)
@@ -22,11 +25,14 @@ class TitanicData(Dataset):
         # Get the data item
         item = self.data.iloc[idx]
 
-        label = torch.tensor(
-            np.array([
-                item["Survived"].item()
-            ])
-        )
+        if self.test_set:
+            label = torch.tensor(np.array([]))
+        else:
+            label = torch.tensor(
+                np.array([
+                    item["Survived"].item()
+                ])
+            )
 
         features = torch.tensor(
             np.array([
