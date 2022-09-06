@@ -1,4 +1,5 @@
 from curses import raw
+from matplotlib.pyplot import axis
 import torch
 from torch.utils.data import Dataset
 import pandas as pd
@@ -25,24 +26,31 @@ class TitanicData(Dataset):
         # Get the data item
         item = self.data.iloc[idx]
 
+        # Get the label dependin on if it is a test or train dataset
         if self.test_set:
             label = torch.tensor(np.array([]))
         else:
-            label = torch.tensor(
-                np.array([
-                    item["Survived"].item()
-                ])
-            )
+            if item["Survived"].item() == 1:
+                label = torch.tensor(
+                    np.array([1,0])
+                )
+            else:
+                label = torch.tensor(
+                    np.array([0,1])
+                )
+            
 
-        features = torch.tensor(
-            np.array([
-                item["Pclass"].item(),
-                item["Sex"].item(), 
-                item["SibSp"].item(), 
-                item["Parch"].item(), 
-                item["Fare"].item()
-            ])
-        )
+        # Get the names of the features
+        feature_names = []
+        for col in self.data.columns:
+            if col != "Survived": feature_names.append(col)
+
+        features_array = []
+        for feature_name in feature_names:
+            features_array.append(item[feature_name].item())
+
+        # Convert the features array to a tensor
+        features = torch.tensor(np.array(features_array))
 
         # Return a tensor
         return label, features

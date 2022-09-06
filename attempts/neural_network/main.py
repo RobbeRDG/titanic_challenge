@@ -15,6 +15,9 @@ def training():
     # Get the dataset
     data = TitanicData(config.TRAIN_DIR, test_set=False)
 
+    # Get the number of features
+    num_features = data.num_features()
+
     # Create a train and test split
     train_size = int(len(data)*0.8)
     test_size = len(data) - train_size
@@ -25,17 +28,17 @@ def training():
     test_loader = DataLoader(test_data, config.BATCH_SIZE, shuffle=True)
 
     # Initialize the model
-    model = BasicNN(5).to(config.DEVICE)
+    model = BasicNN(num_features).to(config.DEVICE)
 
     # Initialize the optimizer
-    optimizer = optim.SGD(model.parameters(), config.LEARNING_RATE)
+    optimizer = optim.Adam(model.parameters(), config.LEARNING_RATE)
 
     # If loading previous model
     if config.LOAD_MODEL:
         load_checkpoint(config.CHECKPOINT, model, optimizer, config.LEARNING_RATE)
 
     # Initialize the loss function
-    loss_fn = nn.MSELoss()
+    loss_fn = nn.BCEWithLogitsLoss()
 
     # Initialize the gradient scalers
     scaler = torch.cuda.amp.grad_scaler.GradScaler()
@@ -79,8 +82,9 @@ def training():
     save_checkpoint(model, optimizer, config.CHECKPOINT)
 
     # Plot the loss 
-    plt.plot(training_loss_values, 'r')
-    plt.plot(test_loss_values, 'b')
+    plt.plot(training_loss_values, 'r', label='training')
+    plt.plot(test_loss_values, 'b', label='test')
+    plt.legend(loc="upper right")
     plt.savefig('test.png')
 
 def inference():
@@ -109,10 +113,10 @@ def inference():
         input = input.to(config.DEVICE)
 
         # Inference
-        output = model(input)
+        output = model(input).abs()
 
         # Do the classification
-        if output >= 0.5: 
+        if output[0][0] >= output[0][1]: 
             output_data = pd.concat([
                 output_data,
                 pd.DataFrame({
@@ -134,4 +138,4 @@ def inference():
 
 if __name__ == "__main__":
     training()
-    # inference()
+    inference()

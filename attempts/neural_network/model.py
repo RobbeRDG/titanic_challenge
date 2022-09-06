@@ -8,9 +8,12 @@ class BasicNN(nn.Module):
         # Basic nn architecture
         self.sequence = nn.Sequential(
             nn.Linear(in_features, 20),
-            nn.Dropout(0.2),
+            #nn.Dropout(0.2),
             nn.ReLU(),
-            nn.Linear(20, 1),
+            nn.Linear(20, 10),
+            #nn.Dropout(0.2),
+            nn.ReLU(),
+            nn.Linear(10, 2),
             nn.Sigmoid()
         )
 

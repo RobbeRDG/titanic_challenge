@@ -33,7 +33,7 @@ def train(
         # Train the model
         with torch.cuda.amp.autocast():
             # Get the outputs of the model
-            outputs = model(inputs)
+            outputs = model(inputs).abs()
 
             # Calculate the loss
             loss = loss_fn(outputs, labels)
@@ -76,7 +76,7 @@ def evaluate(
             inputs, labels = inputs.to(config.DEVICE), labels.to(config.DEVICE)
 
             # Make a prediction
-            outputs = model(inputs)
+            outputs = model(inputs).abs()
 
             # Calculate the loss
             loss = loss_fn(outputs, labels)
