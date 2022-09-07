@@ -10,10 +10,7 @@ class BasicNN(nn.Module):
             nn.Linear(in_features, 20),
             #nn.Dropout(0.2),
             nn.ReLU(),
-            nn.Linear(20, 10),
-            #nn.Dropout(0.2),
-            nn.ReLU(),
-            nn.Linear(10, 2),
+            nn.Linear(20, 2),
             nn.Sigmoid()
         )
 

@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 
 class TitanicData(Dataset):
-    def __init__(self, path, test_set):
+    def __init__(self, path, pred_set):
         super().__init__()
 
         # Load the data
@@ -16,7 +16,7 @@ class TitanicData(Dataset):
         self.data = raw_data
 
         # Set the test set flag
-        self.test_set = test_set
+        self.pred_set = pred_set
 
     def __len__(self):
         return len(self.data)
@@ -27,7 +27,7 @@ class TitanicData(Dataset):
         item = self.data.iloc[idx]
 
         # Get the label dependin on if it is a test or train dataset
-        if self.test_set:
+        if self.pred_set:
             label = torch.tensor(np.array([]))
         else:
             if item["Survived"].item() == 1:
