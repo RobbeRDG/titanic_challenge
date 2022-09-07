@@ -225,7 +225,7 @@ def inference(pred_data):
             ])
 
     # Save the output data
-    output_data.to_csv('output/baseline_nn/output.csv', index=False)
+    output_data.to_csv('output/output.csv', index=False)
 
 if __name__ == "__main__":
     # Set the seeds
